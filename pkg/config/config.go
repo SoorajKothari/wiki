@@ -35,8 +35,8 @@ func GetConfig() (*Config, error) {
 	}
 
 	config.UpdateSecrets()
-	connStr := fmt.Sprintf("%s:%s@(%s)/%s?charset=uft8&parseTime=True&loc=Local", config.DbUser, config.DbPassword, config.DbHost, config.DbName)
-
+	connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable", config.DbHost, config.DbUser, config.DbPassword, config.DbName)
+	log.Println("DSN: " + connStr)
 	log.Println("Initializing Database")
 	config.DB = db.InitializeDB(connStr)
 

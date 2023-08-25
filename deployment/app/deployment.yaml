@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: booksapi
+  name: booksapi
+  namespace: books-ns
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: booksapi
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: booksapi
+    spec:
+      containers:
+        - image: booksapp:0.1.3
+          name: booksapik8s
+          resources: {}
+          env:
+            - name: DBPASS
+              valueFrom:
+                secretKeyRef:
+                  key: rootpassword
+                  name: postgres-password
+            - name: DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: dbname
+                  name: books-config-map
+            - name: DBHOST
+              valueFrom:
+                configMapKeyRef:
+                  key: dbhost
+                  name: books-config-map
+            - name: DBUSER
+              valueFrom:
+                configMapKeyRef:
+                  key: dbuser
+                  name: books-config-map
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: serverport
+                  name: books-config-map
+status: {}
+
